@@ -17,11 +17,11 @@ function Download() {
           <h2>NoDriver4j Installer</h2>
           <p className="version">v0.1.0-beta {'\u00B7'} Windows x64</p>
           
-            className="btn btn-primary"
+            <a className="btn btn-primary"
             href="https://github.com/pppi21/laksdjfoinvsad"
             target="_blank"
-            rel="noopener noreferrer"
-          >
+            rel="noopener noreferrer">
+          
             Download Setup.exe
           </a>
         </div>
