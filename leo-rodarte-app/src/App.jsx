@@ -1,20 +1,24 @@
 import { useState } from 'react';
-import Message from './Message';
+import Nav from './Nav';
+import Footer from './Footer';
+import Home from './Home';
+import About from './About';
+import Download from './Download';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [activePage, setActivePage] = useState('Home');
 
-  function handleClick() {
-    setCount(count + 1);
+  function handleNavigate(page) {
+    setActivePage(page);
   }
 
   return (
-    <div>
-      <h1>Leo Rodarte App</h1>
-      <p>Count: {count}</p>
-      <button onClick={handleClick}>Increase Count</button>
-      <Message text={`Button has been clicked ${count} times!`} name="Leo Rodarte" />
-      <Message text="Props make components reusable." name="Leo" />
+    <div className="app">
+      <Nav activePage={activePage} onNavigate={handleNavigate} />
+      {activePage === 'Home' && <Home onNavigate={handleNavigate} />}
+      {activePage === 'About' && <About />}
+      {activePage === 'Download' && <Download />}
+      <Footer />
     </div>
   );
 }
