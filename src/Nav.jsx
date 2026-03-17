@@ -1,5 +1,5 @@
 function Nav({ activePage, onNavigate, user, onLogin, onLogout }) {
-  const links = ['Home', 'About', 'Download'];
+  const links = ['Home', 'About', 'Reviews', 'Download'];
 
   return (
     <nav className="navbar">

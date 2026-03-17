@@ -6,6 +6,7 @@ import Footer from './Footer';
 import Home from './Home';
 import About from './About';
 import Download from './Download';
+import Reviews from './Reviews';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -20,7 +21,9 @@ function App() {
 
   const handleLogin = async () => {
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      // Force token refresh so custom claims (e.g. admin) are available immediately
+      await result.user.getIdToken(true);
     } catch (error) {
       console.error('Login failed', error);
     }
@@ -49,9 +52,10 @@ function App() {
         onLogin={handleLogin}
         onLogout={handleLogout}
       />
-      {activePage === 'Home' && <Home onNavigate={handleNavigate} />}
-      {activePage === 'About' && <About />}
+      {activePage === 'Home'     && <Home onNavigate={handleNavigate} />}
+      {activePage === 'About'    && <About />}
       {activePage === 'Download' && <Download />}
+      {activePage === 'Reviews'  && <Reviews user={user} onLogin={handleLogin} />}
       <Footer />
     </div>
   );

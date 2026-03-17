@@ -1,0 +1,47 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.admin == true;
+    }
+
+    function isValidReview() {
+      let data = request.resource.data;
+      return data.rating is int
+        && data.rating >= 1
+        && data.rating <= 5
+        && (
+          !('text' in data)
+          || (data.text is string && data.text.size() <= 1000)
+        );
+    }
+
+    // Reviews collection
+    // Document ID = userId (enforces 1 review per user at the database level)
+    match /reviews/{userId} {
+
+      // Anyone can read reviews
+      allow read: if true;
+
+      // A user can only create their own review document
+      allow create: if isOwner(userId) && isValidReview();
+
+      // A user can only update their own review, admin cannot edit others' reviews
+      allow update: if isOwner(userId) && isValidReview();
+
+      // Owner can delete their own review, admin can delete any review
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+  }
+}
