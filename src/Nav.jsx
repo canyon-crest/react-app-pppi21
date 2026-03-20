@@ -15,17 +15,29 @@ function Nav({ activePage, onNavigate, user, onLogin, onLogout }) {
             </button>
           </li>
         ))}
-        <li>
-          {user ? (
-            <button className="nav-button" onClick={onLogout}>
-              Log Out
-            </button>
-          ) : (
+        {user ? (
+          <>
+            <li>
+              <button
+                className={activePage === 'Account' ? 'nav-button active' : 'nav-button'}
+                onClick={() => onNavigate('Account')}
+              >
+                {user.displayName || 'Account'}
+              </button>
+            </li>
+            <li>
+              <button className="nav-button" onClick={onLogout}>
+                Log Out
+              </button>
+            </li>
+          </>
+        ) : (
+          <li>
             <button className="nav-button" onClick={onLogin}>
               Login
             </button>
-          )}
-        </li>
+          </li>
+        )}
       </ul>
     </nav>
   );

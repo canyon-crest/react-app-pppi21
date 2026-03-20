@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { auth, provider } from './firebase';
 import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
+import Account from './Account';
 import Nav from './Nav';
 import Footer from './Footer';
 import Home from './Home';
@@ -56,6 +57,7 @@ function App() {
       {activePage === 'About'    && <About />}
       {activePage === 'Download' && <Download />}
       {activePage === 'Reviews'  && <Reviews user={user} onLogin={handleLogin} />}
+      {activePage === 'Account'  && <Account user={user} onLogin={handleLogin} />}
       <Footer />
     </div>
   );

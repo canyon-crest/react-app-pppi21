@@ -43,5 +43,13 @@ service cloud.firestore {
       // Owner can delete their own review, admin can delete any review
       allow delete: if isOwner(userId) || isAdmin();
     }
+
+    // Licenses collection
+    // Document ID = license key, so all client access is denied to prevent
+    // exposing the key through the document path.
+    // All reads and writes go through Cloud Functions (Admin SDK bypasses rules).
+    match /licenses/{licenseId} {
+      allow read, write: if false;
+    }
   }
 }
