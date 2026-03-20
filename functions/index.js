@@ -123,6 +123,10 @@ exports.generateLicenseKey = onCall(
           type: 'licenses',
           attributes: {
             name: email || uid,
+            metadata: {
+              firebaseUid: uid,
+              email,
+            },
           },
           relationships: {
             policy: {

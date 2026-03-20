@@ -9,9 +9,23 @@ import About from './About';
 import Download from './Download';
 import Reviews from './Reviews';
 
+function getPageFromHash() {
+  const hash = window.location.hash.replace('#', '');
+  const valid = ['Home', 'About', 'Download', 'Reviews', 'Account'];
+  return valid.find((p) => p.toLowerCase() === hash.toLowerCase()) || 'Home';
+}
+
 function App() {
   const [user, setUser] = useState(null);
-  const [activePage, setActivePage] = useState('Home');
+  const [activePage, setActivePage] = useState(getPageFromHash);
+
+  useEffect(() => {
+    function onHashChange() {
+      setActivePage(getPageFromHash());
+    }
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -39,9 +53,9 @@ function App() {
       console.error('Logout failed', error);
     }
   };
-
+  
   function handleNavigate(page) {
-    setActivePage(page);
+    window.location.hash = page.toLowerCase();
   }
 
   return (

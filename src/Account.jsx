@@ -7,7 +7,7 @@ const generateLicenseKey = httpsCallable(functions, 'generateLicenseKey');
 const revealLicenseKey = httpsCallable(functions, 'revealLicenseKey');
 const resetLicenseMachines = httpsCallable(functions, 'resetLicenseMachines');
 
-const MASKED_KEY = '\u2022\u2022\u2022\u2022\u2022\u2022-\u2022\u2022\u2022\u2022\u2022\u2022-\u2022\u2022\u2022\u2022\u2022\u2022-\u2022\u2022\u2022\u2022\u2022\u2022-\u2022\u2022\u2022\u2022\u2022\u2022-V3';
+const MASKED_KEY = '\u2022\u2022\u2022\u2022\u2022\u2022-\u2022\u2022\u2022\u2022\u2022\u2022-\u2022\u2022\u2022\u2022\u2022\u2022-\u2022\u2022\u2022\u2022\u2022\u2022-\u2022\u2022\u2022\u2022\u2022\u2022-\u2022\u2022';
 
 function Account({ user, onLogin }) {
   const [license, setLicense] = useState(null);
