@@ -44,11 +44,10 @@ service cloud.firestore {
       allow delete: if isOwner(userId) || isAdmin();
     }
 
-    // Licenses collection
-    // Document ID = license key, so all client access is denied to prevent
-    // exposing the key through the document path.
+    // License mappings collection
+    // Document ID = Firebase UID, contains only the Keygen license ID.
     // All reads and writes go through Cloud Functions (Admin SDK bypasses rules).
-    match /licenses/{licenseId} {
+    match /licenseMappings/{uid} {
       allow read, write: if false;
     }
   }

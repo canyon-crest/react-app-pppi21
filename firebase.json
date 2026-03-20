@@ -11,7 +11,12 @@
     "rules": "firestore.rules"
   },
   "functions": {
-    "source": "functions",
-    "runtime": "nodejs24"
+  "source": "functions",
+  "runtime": "nodejs24",
+  "env": {
+    "KEYGEN_ACCOUNT_ID": "53bbbee4-a159-47d3-be2a-01c4202a2679",
+    "KEYGEN_PRODUCT_ID": "9a8c4674-3aa1-41b1-bc7f-bfd822bc5f46",
+    "KEYGEN_POLICY_ID": "70b1b995-1099-450c-aa2f-3c9db08267b2"
   }
+}
 }

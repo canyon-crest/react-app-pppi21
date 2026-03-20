@@ -5,9 +5,9 @@ import { functions } from './firebase';
 const getLicenseInfo = httpsCallable(functions, 'getLicenseInfo');
 const generateLicenseKey = httpsCallable(functions, 'generateLicenseKey');
 const revealLicenseKey = httpsCallable(functions, 'revealLicenseKey');
-const resetLicenseIps = httpsCallable(functions, 'resetLicenseIps');
+const resetLicenseMachines = httpsCallable(functions, 'resetLicenseMachines');
 
-const MASKED_KEY = 'ND4J-\u2022\u2022\u2022\u2022-\u2022\u2022\u2022\u2022-\u2022\u2022\u2022\u2022';
+const MASKED_KEY = '\u2022\u2022\u2022\u2022\u2022\u2022-\u2022\u2022\u2022\u2022\u2022\u2022-\u2022\u2022\u2022\u2022\u2022\u2022-\u2022\u2022\u2022\u2022\u2022\u2022-\u2022\u2022\u2022\u2022\u2022\u2022-V3';
 
 function Account({ user, onLogin }) {
   const [license, setLicense] = useState(null);
@@ -78,12 +78,12 @@ function Account({ user, onLogin }) {
     setResetting(true);
     setError(null);
     try {
-      await resetLicenseIps();
+      await resetLicenseMachines();
       setShowConfirm(false);
       await fetchLicenseInfo();
     } catch (err) {
       console.error('Reset failed:', err);
-      setError('Failed to reset bound IPs.');
+      setError('Failed to reset machines.');
     } finally {
       setResetting(false);
     }
@@ -145,7 +145,7 @@ function Account({ user, onLogin }) {
                 </button>
               </div>
               <div className="key-meta">
-                <span className={`status-badge status-${license.status}`}>
+                <span className={`status-badge status-${license.status.toLowerCase()}`}>
                   {license.status}
                 </span>
                 {license.createdAt && (
@@ -153,41 +153,49 @@ function Account({ user, onLogin }) {
                     Created {new Date(license.createdAt).toLocaleDateString()}
                   </span>
                 )}
+                {license.expiry && (
+                  <span className="account-muted">
+                    Expires {new Date(license.expiry).toLocaleDateString()}
+                  </span>
+                )}
               </div>
             </div>
 
-            {/* Bound IPs card */}
+            {/* Machines card */}
             <div className="card account-card">
               <div className="ip-header">
-                <h3>Bound IPs</h3>
+                <h3>Devices</h3>
                 <span className="account-muted">
-                  {license.boundIps.length} / 2 slots used
+                  {license.machines.length} / {license.maxMachines} slots used
                 </span>
               </div>
-              {license.boundIps.length > 0 ? (
+              {license.machines.length > 0 ? (
                 <ul className="ip-list">
-                  {license.boundIps.map((ip) => (
-                    <li key={ip} className="ip-item">
-                      <code>{ip}</code>
+                  {license.machines.map((machine) => (
+                    <li key={machine.id} className="ip-item">
+                      <code>{machine.fingerprint}</code>
+                      {machine.ip && (
+                        <span className="account-muted">{machine.ip}</span>
+                      )}
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="account-muted">No IPs bound to this license.</p>
+                <p className="account-muted">No devices bound to this license.</p>
               )}
 
               {/* Reset flow */}
-              {license.boundIps.length > 0 && !showConfirm && (
+              {license.machines.length > 0 && !showConfirm && (
                 <button
                   className="btn btn-danger"
                   onClick={() => setShowConfirm(true)}
                 >
-                  Reset Bound IPs
+                  Reset Devices
                 </button>
               )}
               {showConfirm && (
                 <div className="confirm-box">
-                  <p>Are you sure? This will unbind all IPs from your license.</p>
+                  <p>Are you sure? This will deactivate all devices on your license.</p>
                   <div className="form-actions">
                     <button
                       className="btn btn-danger"
